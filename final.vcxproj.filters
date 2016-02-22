@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Файлы исходного кода">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Заголовочные файлы">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Заголовочные файлы\getopt">
+      <UniqueIdentifier>{b962f55e-cc1a-4ed1-b017-26c1a5295cec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\getopt">
+      <UniqueIdentifier>{ae6cc7bc-7f6e-4e74-bae9-5ddac127582f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\cmd">
+      <UniqueIdentifier>{4922ac5d-72a5-4ebb-a455-3e8332ee6dcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\cmd">
+      <UniqueIdentifier>{cede20d1-399a-468e-acdc-22fe5d199800}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="getopt\getopt.c">
+      <Filter>Файлы исходного кода\getopt</Filter>
+    </ClCompile>
+    <ClCompile Include="cmd\parse.cpp">
+      <Filter>Файлы исходного кода\cmd</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="getopt\getopt.h">
+      <Filter>Заголовочные файлы\getopt</Filter>
+    </ClInclude>
+    <ClInclude Include="cmd\parse.h">
+      <Filter>Заголовочные файлы\cmd</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
