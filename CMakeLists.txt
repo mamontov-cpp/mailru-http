@@ -2,6 +2,11 @@
 cmake_minimum_required(VERSION 2.8)
 project(final)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "cmake")
+set(LIBUV_USE_STATIC ON)
+
+find_package(LibUV REQUIRED)
+
 set(SRCS "main.cpp" "cmd/parse.cpp" "cmd/daemonize.cpp")
 set(HDRS "cmd/parse.h")
 
@@ -14,6 +19,9 @@ ELSE()
   set(GLOBAL_LIBS m rt pthread)
 ENDIF()
 
+include_directories(${LIBUV_INCLUDE_DIRS})
+
 add_executable("final"  ${SRCS} ${HDRS})
 
 target_link_libraries("final" ${GLOBAL_LIBS})
+target_link_libraries("final" ${LIBUV_LIBRARIES})

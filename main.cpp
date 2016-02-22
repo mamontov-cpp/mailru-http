@@ -1,5 +1,6 @@
 #include "cmd/parse.h"
 #include "cmd/daemonize.h"
+#include "uv.h"
 #include <cstdio>
 
 int main(int argc, char** argv)
