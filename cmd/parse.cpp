@@ -1,5 +1,8 @@
 #include "parse.h"
 
+// ReSharper disable once CppUnusedIncludeDirective
+#include <string.h>
+
 #ifdef WIN32
     #include "../getopt/getopt.h"
 #else
