@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(final)
 
-set(SRCS "main.cpp" "cmd/parse.cpp")
+set(SRCS "main.cpp" "cmd/parse.cpp" "cmd/daemonize.cpp")
 set(HDRS "cmd/parse.h")
 
 IF (WIN32)

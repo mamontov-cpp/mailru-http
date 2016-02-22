@@ -93,11 +93,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cmd\daemonize.cpp" />
     <ClCompile Include="cmd\parse.cpp" />
     <ClCompile Include="getopt\getopt.c" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cmd\daemonize.h" />
     <ClInclude Include="cmd\parse.h" />
     <ClInclude Include="getopt\getopt.h" />
   </ItemGroup>

@@ -36,12 +36,18 @@
     <ClCompile Include="cmd\parse.cpp">
       <Filter>Файлы исходного кода\cmd</Filter>
     </ClCompile>
+    <ClCompile Include="cmd\daemonize.cpp">
+      <Filter>Файлы исходного кода\cmd</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="getopt\getopt.h">
       <Filter>Заголовочные файлы\getopt</Filter>
     </ClInclude>
     <ClInclude Include="cmd\parse.h">
+      <Filter>Заголовочные файлы\cmd</Filter>
+    </ClInclude>
+    <ClInclude Include="cmd\daemonize.h">
       <Filter>Заголовочные файлы\cmd</Filter>
     </ClInclude>
   </ItemGroup>
