@@ -29,7 +29,7 @@ void on_close(uv_handle_t* handle);
     \param[in] a requested size
     \param[in] buf a buffer
  */
-uv_buf_t* on_memory_request(uv_handle_t* handle, size_t sz);
+uv_buf_t* on_memory_request(uv_handle_s* handle, size_t sz);
 /*! A callback, which is called on readable state
     \param[in] stream a stream
     \param[in] nread a readable state

@@ -60,7 +60,7 @@ void server::on_close(uv_handle_t* handle)
 }
 
 #if UV_VERSION_MAJOR < 1 
-uv_buf_t* server::on_memory_request(uv_handle_t* handle, size_t sz)
+uv_buf_t* server::on_memory_request(uv_handle_s* handle, size_t sz)
 {
     sys::Log::write("[INFO] Client %p requested buffer of %d bytes\n", handle, sz); 
     char* memory = new char[sz];
