@@ -15,6 +15,7 @@ void server::on_connect(uv_stream_t* server_handle, int status)
         int result = uv_accept(server_handle, reinterpret_cast<uv_stream_t*>(client));
         if (result == 0)
         {
+            // Too lazy to put queue here.
             sys::Thread thread(server::on_accept, client);
             thread.run();
         }
