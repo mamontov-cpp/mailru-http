@@ -24,7 +24,8 @@ sys::Mutex::~Mutex()
 #endif
 }
 
-void sys::Mutex::lock() const
+// ReSharper disable once CppMemberFunctionMayBeConst
+void sys::Mutex::lock()
 {
 #ifdef WIN32
     EnterCriticalSection(m_m);
@@ -33,7 +34,8 @@ void sys::Mutex::lock() const
 #endif
 }
 
-void sys::Mutex::unlock() const
+// ReSharper disable once CppMemberFunctionMayBeConst
+void sys::Mutex::unlock()
 {
 #ifdef WIN32
     LeaveCriticalSection(m_m);

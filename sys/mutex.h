@@ -29,10 +29,10 @@ public:
     ~Mutex();
     /*! Locks a mutex, blocking  execution of code in other threads
      */
-    void lock() const;
+    void lock();
     /*! Unlocks a mutex, allowing execution of code in other threads
      */
-    void unlock() const;
+    void unlock();
 protected:
 #ifdef WIN32
     CRITICAL_SECTION*  m_m;          //!< A system-dependent handle of mutex
