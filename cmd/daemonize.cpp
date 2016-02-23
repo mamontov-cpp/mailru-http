@@ -1,4 +1,5 @@
 #include "daemonize.h"
+#include "../config.h"
 #include <cstdio>
 
 #ifdef WIN32

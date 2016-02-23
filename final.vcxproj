@@ -97,11 +97,20 @@
     <ClCompile Include="cmd\parse.cpp" />
     <ClCompile Include="getopt\getopt.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="server\on_connect.cpp" />
+    <ClCompile Include="sys\log.cpp" />
+    <ClCompile Include="sys\mutex.cpp" />
+    <ClCompile Include="sys\thread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cmd\daemonize.h" />
     <ClInclude Include="cmd\parse.h" />
+    <ClInclude Include="config.h" />
     <ClInclude Include="getopt\getopt.h" />
+    <ClInclude Include="server\on_connect.h" />
+    <ClInclude Include="sys\log.h" />
+    <ClInclude Include="sys\mutex.h" />
+    <ClInclude Include="sys\thread.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

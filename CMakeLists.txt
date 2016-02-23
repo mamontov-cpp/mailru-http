@@ -7,8 +7,8 @@ set(LIBUV_USE_STATIC ON)
 
 find_package(LibUV REQUIRED)
 
-set(SRCS "main.cpp" "cmd/parse.cpp" "cmd/daemonize.cpp")
-set(HDRS "cmd/parse.h")
+set(SRCS "main.cpp" "cmd/parse.cpp" "cmd/daemonize.cpp" "sys/thread.cpp" "sys/mutex.cpp" "sys/log.cpp" "server/on_connect.cpp")
+set(HDRS "config.h" "cmd/parse.h" "cmd/daemonize.h" "sys/thread.h" "sys/mutex.h" "sys/log.h" "server/on_connect.h")
 
 IF (WIN32)
   add_definitions(-DWIN32)

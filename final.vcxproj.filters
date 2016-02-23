@@ -25,6 +25,18 @@
     <Filter Include="Файлы исходного кода\cmd">
       <UniqueIdentifier>{cede20d1-399a-468e-acdc-22fe5d199800}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Заголовочные файлы\sys">
+      <UniqueIdentifier>{45bbe633-bc3a-4ef1-a907-283cd18432f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\sys">
+      <UniqueIdentifier>{b1c022f9-9a1e-4298-b9cb-b9d5bc652551}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\server">
+      <UniqueIdentifier>{c9485988-52a9-47b7-a5ac-2bd9598bc7c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\server">
+      <UniqueIdentifier>{41241ae1-e72c-4dac-b05b-55a2720a683f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -39,6 +51,18 @@
     <ClCompile Include="cmd\daemonize.cpp">
       <Filter>Файлы исходного кода\cmd</Filter>
     </ClCompile>
+    <ClCompile Include="sys\mutex.cpp">
+      <Filter>Файлы исходного кода\sys</Filter>
+    </ClCompile>
+    <ClCompile Include="sys\thread.cpp">
+      <Filter>Файлы исходного кода\sys</Filter>
+    </ClCompile>
+    <ClCompile Include="sys\log.cpp">
+      <Filter>Файлы исходного кода\sys</Filter>
+    </ClCompile>
+    <ClCompile Include="server\on_connect.cpp">
+      <Filter>Файлы исходного кода\server</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="getopt\getopt.h">
@@ -49,6 +73,21 @@
     </ClInclude>
     <ClInclude Include="cmd\daemonize.h">
       <Filter>Заголовочные файлы\cmd</Filter>
+    </ClInclude>
+    <ClInclude Include="sys\mutex.h">
+      <Filter>Заголовочные файлы\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="sys\thread.h">
+      <Filter>Заголовочные файлы\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="sys\log.h">
+      <Filter>Заголовочные файлы\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="server\on_connect.h">
+      <Filter>Заголовочные файлы\server</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
