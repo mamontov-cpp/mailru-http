@@ -43,6 +43,7 @@ void sys::Log::write(const char* format, ...)
         vprintf(format, args);
 #endif
         vfprintf(m_log.m_file, format, args);
+        fflush(m_log.m_file);
         va_end(args);
         m_log.m_mtx.unlock();
     }
