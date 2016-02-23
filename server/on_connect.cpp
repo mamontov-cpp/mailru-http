@@ -8,6 +8,8 @@
 #include <vector>
 // ReSharper disable once CppUnusedIncludeDirective
 #include <cstdlib>
+// ReSharper disable once CppUnusedIncludeDirective
+#include <cstring>
 
 extern uv_loop_t* uv_loop;
 
