@@ -5,6 +5,8 @@
 #include <uv.h>
 
 
+// Либа полагается на libuv и slre для разбора
+
 #ifndef WIN32
     #include <signal.h>
 #endif

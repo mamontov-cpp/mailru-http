@@ -8,6 +8,8 @@
 namespace server
 {
 
+struct ClientState;
+
 /*! Describes a thing for on connecting
     \param[in] server_handle a server handles
     \param[in] status an access status
@@ -50,5 +52,15 @@ void on_memory_request(uv_handle_t* handle, size_t sz, uv_buf_t* buf);
  */
 void on_read(uv_stream_t * stream, int nread, uv_buf_t const*  buf);
 #endif
+/*! Checks, whether we should respond to connecting
+    \param[in] stream a stream data
+    \param[in] state a state of client
+    \param[in] require whether we require response
+ */
+void check_if_can_respond(
+    uv_stream_t* stream, 
+    server::ClientState* state,
+    bool require
+);
 
 }

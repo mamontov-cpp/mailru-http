@@ -37,6 +37,12 @@
     <Filter Include="Файлы исходного кода\server">
       <UniqueIdentifier>{41241ae1-e72c-4dac-b05b-55a2720a683f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Заголовочные файлы\slre">
+      <UniqueIdentifier>{219eb817-1ada-4d1c-98c2-c44b3a55a6d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\slre">
+      <UniqueIdentifier>{75e9ef82-4333-4ed8-92ea-286f9a495dd1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -63,6 +69,18 @@
     <ClCompile Include="server\on_connect.cpp">
       <Filter>Файлы исходного кода\server</Filter>
     </ClCompile>
+    <ClCompile Include="server\clientstate.cpp">
+      <Filter>Файлы исходного кода\server</Filter>
+    </ClCompile>
+    <ClCompile Include="server\response.cpp">
+      <Filter>Файлы исходного кода\server</Filter>
+    </ClCompile>
+    <ClCompile Include="server\server.cpp">
+      <Filter>Файлы исходного кода\server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SDKs\slre\slre.c">
+      <Filter>Файлы исходного кода\slre</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="getopt\getopt.h">
@@ -88,6 +106,21 @@
     </ClInclude>
     <ClInclude Include="config.h">
       <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="server\clientstate.h">
+      <Filter>Заголовочные файлы\server</Filter>
+    </ClInclude>
+    <ClInclude Include="server\requestparsingstate.h">
+      <Filter>Заголовочные файлы\server</Filter>
+    </ClInclude>
+    <ClInclude Include="server\response.h">
+      <Filter>Заголовочные файлы\server</Filter>
+    </ClInclude>
+    <ClInclude Include="server\server.h">
+      <Filter>Заголовочные файлы\server</Filter>
+    </ClInclude>
+    <ClInclude Include="slre\slre.h">
+      <Filter>Заголовочные файлы\slre</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

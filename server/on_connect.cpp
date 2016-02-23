@@ -1,11 +1,16 @@
 #include "on_connect.h"
+#include "clientstate.h"
+#include "server.h"
 #include "../sys/log.h"
 #include "../sys/thread.h"
 #include "../config.h"
+// ReSharper disable once CppUnusedIncludeDirective
 #include <vector>
+// ReSharper disable once CppUnusedIncludeDirective
 #include <cstdlib>
 
 extern uv_loop_t* uv_loop;
+
 
 void server::on_connect(uv_stream_t* server_handle, int status)
 {
@@ -17,8 +22,9 @@ void server::on_connect(uv_stream_t* server_handle, int status)
         if (result == 0)
         {
             // Too lazy to put queue here.
-            sys::Thread thread(server::on_accept, client);
-            thread.run();
+            server::on_accept(client);
+            //sys::Thread thread(server::on_accept, client);
+            //thread.run();
         }
         else
         {
@@ -47,7 +53,7 @@ void* server::on_accept(void* socket)
     uv_tcp_t* client = reinterpret_cast<uv_tcp_t*>(socket);
     sys::Log::write("[INFO] Client %p connected\n", client);
     
-    client->data = new std::vector<char>();
+    client->data = new ClientState();
 
     uv_read_start(reinterpret_cast<uv_stream_t*>(client), server::on_memory_request, server::on_read);
     return NULL;
@@ -85,12 +91,13 @@ void server::on_read(
 #endif
     )
 {
-    uv_write_t req;
+    server::ClientState* state = reinterpret_cast<server::ClientState*>(stream->data);
     /* if read bytes counter -1 there is an error or EOF */
 
 #ifdef NO_DAEMONIZE
         sys::Log::write("[INFO] Read callback called on %p with %d\n", stream, nread);
 #endif
+
     if (nread < 0) {
         if (nread != UV_EOF) {
 #if UV_VERSION_MAJOR < 1
@@ -100,42 +107,11 @@ void server::on_read(
 #endif
         }
         
-
-        /* write sync the incoming buffer to the socket */
-        uv_buf_t out_buf;
-        char tmp[1] = {0};
-#ifdef NO_DAEMONIZE
-            sys::Log::write("[INFO] Preparing to pipe data on %p\n", stream);
-#endif
-        if (stream->data)
-        {
-            std::vector<char>* l = reinterpret_cast<std::vector<char> *>(stream->data);
-            out_buf.base = &((*l)[0]);
-            out_buf.len = l->size();
-#ifdef NO_DAEMONIZE
-            l->push_back(0);
-            sys::Log::write("[INFO] Piping to %p buffer %d: %s\n", stream, l->size(), &((*l)[0]));
-#endif
-        }
-        else
-        {
-            out_buf.len = 1;
-            out_buf.base = tmp;
-        }
-
-        int result = uv_write(&req, stream, &out_buf, 1, NULL);
-        if (result) {
-#if UV_VERSION_MAJOR < 1
-            sys::Log::write("[WARNING] Error on writing to buffer on %p: %s\n", stream, uv_err_name(uv_last_error(uv_loop)));
-#else
-            sys::Log::write("[WARNING] Error on writing to buffer on %p: %s\n", stream, uv_err_name(result));
-#endif
-        }
-
+        server::check_if_can_respond(stream, state, true);
 
         if (stream->data)
         {
-            delete reinterpret_cast<std::vector<char> *>(stream->data);
+            delete state;
         }
         uv_close(reinterpret_cast<uv_handle_t *>(stream), server::on_close);
     }
@@ -144,18 +120,17 @@ void server::on_read(
         // Copy buffer to inner vector
         if (nread > 0)
         {
-            std::vector<char>* vector = reinterpret_cast<std::vector<char> *>(stream->data);
+            std::string buffer_length_string_for_log;
+            buffer_length_string_for_log.resize(nread);
 #if UV_VERSION_MAJOR < 1
-            for(int i = 0; i < nread; i++)
-            {
-                vector->push_back(buf.base[i]);
-            }
+            memcpy(&(buffer_length_string_for_log[0]), buf.base, nread);
+            state->append(buf.base, nread);            
 #else
-            for(int i = 0; i < nread; i++)
-            {
-                vector->push_back(buf->base[i]);
-            }
+            memcpy(&(buffer_length_string_for_log[0]), buf->base, nread);
+            state->append(buf->base, nread);
 #endif
+            sys::Log::write("[INFO] Received request on %p:\n%s\n", stream, buffer_length_string_for_log.c_str());
+            server::check_if_can_respond(stream, state, false);
         }
     }
 
@@ -172,4 +147,57 @@ void server::on_read(
         free(buf->base);
     }
 #endif
+}
+
+
+void server::check_if_can_respond(
+    uv_stream_t* stream, 
+    server::ClientState* state,
+    bool require
+)
+{
+    if (state->Responded == false)
+    {
+        server::RequestParsingState* rps = server::Server::parseRequest(state);
+        server::Response* response = NULL; 
+        if (require)
+        {    
+            response = server::Server::stateToResponse(rps);
+        }
+        else
+        {
+            if (rps->Complete)
+            {
+                response = server::Server::stateToResponse(rps);
+            }
+        }
+        if (response)
+        {
+            state->Responded = true;
+
+            uv_buf_t out_buf;
+            out_buf.base = response->body();
+            out_buf.len = response->length();
+            sys::Log::write(
+                "[INFO] Piping to %p response %d in request for %s(%s)\n", 
+                stream,  
+                response->code(),
+                rps->BaseURI.c_str(),
+                rps->URI.c_str()
+            );
+
+            uv_write_t* req = new uv_write_t();
+            int result = uv_write(req, stream, &out_buf, 1, NULL);
+            if (result) 
+            {
+                #if UV_VERSION_MAJOR < 1
+                    sys::Log::write("[WARNING] Error on writing to buffer on %p: %s\n", stream, uv_err_name(uv_last_error(uv_loop)));
+                #else
+                    sys::Log::write("[WARNING] Error on writing to buffer on %p: %s\n", stream, uv_err_name(result));
+                #endif
+            }
+            delete response;
+        }
+        delete rps;
+    }
 }

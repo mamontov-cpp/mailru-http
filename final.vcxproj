@@ -93,11 +93,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\SDKs\slre\slre.c" />
     <ClCompile Include="cmd\daemonize.cpp" />
     <ClCompile Include="cmd\parse.cpp" />
     <ClCompile Include="getopt\getopt.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="server\clientstate.cpp" />
     <ClCompile Include="server\on_connect.cpp" />
+    <ClCompile Include="server\response.cpp" />
+    <ClCompile Include="server\server.cpp" />
     <ClCompile Include="sys\log.cpp" />
     <ClCompile Include="sys\mutex.cpp" />
     <ClCompile Include="sys\thread.cpp" />
@@ -107,7 +111,12 @@
     <ClInclude Include="cmd\parse.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="getopt\getopt.h" />
+    <ClInclude Include="server\clientstate.h" />
     <ClInclude Include="server\on_connect.h" />
+    <ClInclude Include="server\requestparsingstate.h" />
+    <ClInclude Include="server\response.h" />
+    <ClInclude Include="server\server.h" />
+    <ClInclude Include="slre\slre.h" />
     <ClInclude Include="sys\log.h" />
     <ClInclude Include="sys\mutex.h" />
     <ClInclude Include="sys\thread.h" />
