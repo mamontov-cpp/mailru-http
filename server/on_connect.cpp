@@ -87,6 +87,10 @@ void server::on_read(
 {
     uv_write_t req;
     /* if read bytes counter -1 there is an error or EOF */
+
+#ifdef NO_DAEMONIZE
+        sys::Log::write("[INFO] Read callback called on %p with %d\n", stream, nread);
+#endif
     if (nread < 0) {
         if (nread != UV_EOF) {
 #if UV_VERSION_MAJOR < 1
@@ -100,6 +104,9 @@ void server::on_read(
         /* write sync the incoming buffer to the socket */
         uv_buf_t out_buf;
         char tmp[1] = {0};
+#ifdef NO_DAEMONIZE
+            sys::Log::write("[INFO] Preparing to pipe data on %p\n", stream);
+#endif
         if (stream->data)
         {
             std::vector<char>* l = reinterpret_cast<std::vector<char> *>(stream->data);
