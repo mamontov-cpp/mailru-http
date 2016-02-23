@@ -2,6 +2,7 @@
 #include "cmd/daemonize.h"
 #include "server/on_connect.h"
 #include "sys/log.h"
+#include "sys/threadpool.h"
 #include <uv.h>
 
 
@@ -32,6 +33,7 @@ if (status != 0) {                                                   \
 
 int main(int argc, char** argv)
 {
+    sys::ThreadPool pool(server::worker_function, 10);
     cmd::parse(argc, argv, opts);
     printf("[INFO] Going to serve %s on %s:%d\n", opts.Directory.c_str(), opts.IP.c_str(), opts.Port);
     if (sys::Log::open() == false)
@@ -67,7 +69,9 @@ int main(int argc, char** argv)
         result = uv_listen(reinterpret_cast<uv_stream_t*>(&server_socket), MAX_WRITE_HANDLES, server::on_connect);
         CHECK(result, "uv_listen");
         sys::Log::write("[INFO] Starting listening %s on %s:%d\n", opts.Directory.c_str(), opts.IP.c_str(), opts.Port);
+        pool.run();
         uv_run(uv_loop,UV_RUN_DEFAULT);
+        pool.wait();
     }
     else
     {

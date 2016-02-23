@@ -2,7 +2,8 @@
 #include "clientstate.h"
 #include "server.h"
 #include "../sys/log.h"
-#include "../sys/thread.h"
+#include "../sys/mutex.h"
+#include <deque>
 #include "../config.h"
 // ReSharper disable once CppUnusedIncludeDirective
 #include <vector>
@@ -13,6 +14,8 @@
 
 extern uv_loop_t* uv_loop;
 
+static std::deque<uv_tcp_t*> clients;
+static sys::Mutex clients_lock;
 
 void server::on_connect(uv_stream_t* server_handle, int status)
 {
@@ -23,10 +26,9 @@ void server::on_connect(uv_stream_t* server_handle, int status)
         int result = uv_accept(server_handle, reinterpret_cast<uv_stream_t*>(client));
         if (result == 0)
         {
-            // Too lazy to put queue here.
-            server::on_accept(client);
-            //sys::Thread thread(server::on_accept, client);
-            //thread.run();
+            clients_lock.lock();
+            clients.push_back(client);
+            clients_lock.unlock();
         }
         else
         {
@@ -202,4 +204,32 @@ void server::check_if_can_respond(
         }
         delete rps;
     }
+}
+
+uv_tcp_t* server::next_connection()
+{       
+    uv_tcp_t* result = NULL;
+    // Too lazy to use actual semaphore here
+    clients_lock.lock();
+    if (clients.size())
+    {
+        result = clients.front();
+        clients.pop_front();
+    }
+    clients_lock.unlock();
+    return result;    
+}
+
+void* server::worker_function(void* arg)
+{
+    bool* running = static_cast<bool*>(arg);
+    while((*running))
+    {
+        uv_tcp_t* client = server::next_connection();
+        if (client)
+        {
+            server::on_accept(client);
+        }
+    }
+    return NULL;
 }

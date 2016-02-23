@@ -4,5 +4,5 @@
  */
 #pragma once
 
-// TODO: Remove in release
-#define NO_DAEMONIZE
+// Enable it on debug!
+// #define NO_DAEMONIZE

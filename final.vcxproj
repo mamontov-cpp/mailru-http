@@ -105,6 +105,7 @@
     <ClCompile Include="sys\log.cpp" />
     <ClCompile Include="sys\mutex.cpp" />
     <ClCompile Include="sys\thread.cpp" />
+    <ClCompile Include="sys\threadpool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cmd\daemonize.h" />
@@ -120,6 +121,7 @@
     <ClInclude Include="sys\log.h" />
     <ClInclude Include="sys\mutex.h" />
     <ClInclude Include="sys\thread.h" />
+    <ClInclude Include="sys\threadpool.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

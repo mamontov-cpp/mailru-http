@@ -81,6 +81,9 @@
     <ClCompile Include="..\..\SDKs\slre\slre.c">
       <Filter>Файлы исходного кода\slre</Filter>
     </ClCompile>
+    <ClCompile Include="sys\threadpool.cpp">
+      <Filter>Файлы исходного кода\sys</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="getopt\getopt.h">
@@ -121,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="slre\slre.h">
       <Filter>Заголовочные файлы\slre</Filter>
+    </ClInclude>
+    <ClInclude Include="sys\threadpool.h">
+      <Filter>Заголовочные файлы\sys</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
