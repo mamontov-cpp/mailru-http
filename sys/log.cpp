@@ -19,7 +19,11 @@ sys::Log::~Log()
 bool sys::Log::open()
 {
     // This ridiculous name is picked to avoid conflicts with other testing names
+#ifdef WIN32
+    m_log.m_file = fopen("__________log.txt", "wt");
+#else
     m_log.m_file = fopen("/home/box/__________log.txt", "wt");
+#endif
     if (m_log.m_file)
     {
         setvbuf(m_log.m_file, NULL, _IONBF, 0);

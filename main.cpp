@@ -33,7 +33,7 @@ if (status != 0) {                                                   \
 
 int main(int argc, char** argv)
 {
-    sys::ThreadPool pool(server::worker_function, 10);
+    sys::ThreadPool pool(server::worker_function, 2);
     cmd::parse(argc, argv, opts);
     printf("[INFO] Going to serve %s on %s:%d\n", opts.Directory.c_str(), opts.IP.c_str(), opts.Port);
     if (sys::Log::open() == false)
