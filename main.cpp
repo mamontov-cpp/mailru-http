@@ -17,7 +17,7 @@ cmd::Options opts;
 #if UV_VERSION_MAJOR < 1
 #define CHECK(status, msg)                                                    \
 if (status != 0) {                                                            \
-    sys::Log::write("[FATAL] %s: %s\n", msg, uv_err_name(uv_last_error()));   \
+    sys::Log::write("[FATAL] %s: %s\n", msg, uv_err_name(uv_last_error(uv_loop)));   \
     return 2;                                                                 \
 }
 #else

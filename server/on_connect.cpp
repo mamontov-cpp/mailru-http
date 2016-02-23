@@ -21,14 +21,22 @@ void server::on_connect(uv_stream_t* server_handle, int status)
         }
         else
         {
+#if UV_VERSION_MAJOR < 1
+            sys::Log::write("[WARNING] Error on accept: %s\n", uv_err_name(uv_last_error(uv_loop)));
+#else
             sys::Log::write("[WARNING] Error on accept: %s\n", uv_err_name(result));
+#endif
             uv_close(reinterpret_cast<uv_handle_t *>(client), NULL);
             delete client;
         }
     }
     else
     {
+#if UV_VERSION_MAJOR < 1
+        sys::Log::write("[WARNING] Error on connect: %s\n", uv_err_name(uv_last_error(uv_loop)));
+#else
         sys::Log::write("[WARNING] Error on connect: %s\n", uv_err_name(status));
+#endif
     }
 }
 
@@ -64,7 +72,7 @@ void server::on_read(uv_stream_t* stream, int nread, uv_buf_t const*  buf)
     if (nread < 0) {
         if (nread != UV_EOF) {
 #if UV_VERSION_MAJOR < 1
-            sys::Log::write("[WARNING] Error on reading from buffer on %p: %s\n", stream, uv_err_name(uv_last_error()));
+            sys::Log::write("[WARNING] Error on reading from buffer on %p: %s\n", stream, uv_err_name(uv_last_error(uv_loop)));
 #else
             sys::Log::write("[WARNING] Error on reading from buffer on %p: %s\n", stream, uv_err_name(nread));
 #endif
@@ -93,7 +101,7 @@ void server::on_read(uv_stream_t* stream, int nread, uv_buf_t const*  buf)
         int result = uv_write(&req, stream, &out_buf, 1, NULL);
         if (result) {
 #if UV_VERSION_MAJOR < 1
-            sys::Log::write("[WARNING] Error on writing to buffer on %p: %s\n", stream, uv_err_name(uv_last_error()));
+            sys::Log::write("[WARNING] Error on writing to buffer on %p: %s\n", stream, uv_err_name(uv_last_error(uv_loop)));
 #else
             sys::Log::write("[WARNING] Error on writing to buffer on %p: %s\n", stream, uv_err_name(result));
 #endif
