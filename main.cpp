@@ -3,7 +3,7 @@
 #include "server/on_connect.h"
 #include "sys/log.h"
 #include <uv.h>
-#include <uv-version.h>
+
 
 #ifndef WIN32
     #include <signal.h>
