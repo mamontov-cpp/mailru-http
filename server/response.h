@@ -3,6 +3,8 @@
     Describes a sever response
  */
 #include <vector>
+// ReSharper disable once CppUnusedIncludeDirective
+#include <string>
 
 namespace server
 {
