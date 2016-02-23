@@ -3,6 +3,7 @@
 #include "../sys/thread.h"
 #include "../config.h"
 #include <vector>
+#include <cstdlib>
 
 extern uv_loop_t* uv_loop;
 
@@ -58,14 +59,33 @@ void server::on_close(uv_handle_t* handle)
     delete reinterpret_cast<uv_tcp_t*>(handle);
 }
 
+#if UV_VERSION_MAJOR < 1 
+uv_buf_t* server::on_memory_request(uv_handle_t* handle, size_t sz)
+{
+    sys::Log::write("[INFO] Client %p requested buffer of %d bytes\n", handle, sz); 
+    char* memory = new char[sz];
+    uv_buf_t* buf = new uv_buf_t();
+    *buf = uv_buf_init(memory, sz);
+    return buf
+}
+#else
 void server::on_memory_request(uv_handle_t* handle, size_t sz, uv_buf_t* buf)
 {
     sys::Log::write("[INFO] Client %p requested buffer of %d bytes\n", handle, sz); 
     char* memory = new char[sz];
     *buf = uv_buf_init(memory, sz);
 }
+#endif
 
-void server::on_read(uv_stream_t* stream, int nread, uv_buf_t const*  buf)
+void server::on_read(
+    uv_stream_t* stream, 
+    int nread, 
+#if UV_VERSION_MAJOR < 1    
+    uv_buf_t buf
+#else
+    uv_buf_t const*  buf
+#endif
+    )
 {
     uv_write_t req;
     /* if read bytes counter -1 there is an error or EOF */
@@ -120,17 +140,31 @@ void server::on_read(uv_stream_t* stream, int nread, uv_buf_t const*  buf)
         if (nread > 0)
         {
             std::vector<char>* vector = reinterpret_cast<std::vector<char> *>(stream->data);
+#if UV_VERSION_MAJOR < 1
+            for(int i = 0; i < nread; i++)
+            {
+                vector->push_back(buf.base[i]);
+            }
+#else
             for(int i = 0; i < nread; i++)
             {
                 vector->push_back(buf->base[i]);
             }
+#endif
         }
     }
 
 
     /* free the remaining memory */
+#if UV_VERSION_MAJOR < 1
+    if (buf.base && nread > 0)
+    {
+        free(buf.base);
+    }
+#else
     if (buf->base && nread > 0)
     {
         free(buf->base);
     }
+#endif
 }

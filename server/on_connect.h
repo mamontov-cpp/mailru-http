@@ -22,6 +22,21 @@ void* on_accept(void* socket);
     \param[in] handle a handle
  */
 void on_close(uv_handle_t* handle);
+
+#if UV_VERSION_MAJOR < 1
+/*! A callback for requesting memory
+    \param[in] handle a handle
+    \param[in] a requested size
+    \param[in] buf a buffer
+ */
+uv_buf_t* on_memory_request(uv_handle_t* handle, size_t sz);
+/*! A callback, which is called on readable state
+    \param[in] stream a stream
+    \param[in] nread a readable state
+    \param[in] buf buffer
+ */
+void on_read(uv_stream_t * stream, int nread, uv_buf_t buf);
+#else
 /*! A callback for requesting memory
     \param[in] handle a handle
     \param[in] a requested size
@@ -34,5 +49,6 @@ void on_memory_request(uv_handle_t* handle, size_t sz, uv_buf_t* buf);
     \param[in] buf buffer
  */
 void on_read(uv_stream_t * stream, int nread, uv_buf_t const*  buf);
+#endif
 
 }
