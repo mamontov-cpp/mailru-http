@@ -50,7 +50,7 @@ void on_memory_request(uv_handle_t* handle, size_t sz, uv_buf_t* buf);
     \param[in] nread a readable state
     \param[in] buf buffer
  */
-void on_read(uv_stream_t * stream, int nread, uv_buf_t const*  buf);
+void on_read(uv_stream_t * stream, ssize_t nread, uv_buf_t const*  buf);
 #endif
 /*! Checks, whether we should respond to connecting
     \param[in] stream a stream data

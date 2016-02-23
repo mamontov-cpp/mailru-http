@@ -91,7 +91,7 @@ void server::on_read(
 #if UV_VERSION_MAJOR < 1    
     long int nread,
 #else
-    int nread,
+    ssize_t nread,
 #endif
 #if UV_VERSION_MAJOR < 1    
     uv_buf_t buf
