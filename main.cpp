@@ -45,6 +45,8 @@ int main(int argc, char** argv)
     if (cmd::daemonize())
     {
 #ifndef WIN32
+        // Daemon may close handles, duplicate log in that case.
+        sys::Log::open();        
         signal(SIGPIPE, SIG_IGN);
 #endif
         uv_loop = uv_default_loop();
