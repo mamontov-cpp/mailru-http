@@ -26,9 +26,10 @@ void server::on_connect(uv_stream_t* server_handle, int status)
         int result = uv_accept(server_handle, reinterpret_cast<uv_stream_t*>(client));
         if (result == 0)
         {
-            clients_lock.lock();
-            clients.push_back(client);
-            clients_lock.unlock();
+            on_accept(client);
+            //clients_lock.lock();
+            //clients.push_back(client);
+            //clients_lock.unlock();
         }
         else
         {
@@ -229,11 +230,12 @@ void* server::worker_function(void* arg)
     bool* running = static_cast<bool*>(arg);
     while((*running))
     {
-        uv_tcp_t* client = server::next_connection();
+        
+        /*uv_tcp_t* client = server::next_connection();
         if (client)
         {
             server::on_accept(client);
-        }
+        }*/
     }
     return NULL;
 }
