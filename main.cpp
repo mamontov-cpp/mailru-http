@@ -15,6 +15,7 @@ cmd::Options opts;
 
 #define MAX_WRITE_HANDLES 1000
 #if UV_VERSION_MAJOR < 1
+#define CHECK(status, msg)                                                    \
 if (status != 0) {                                                            \
     sys::Log::write("[FATAL] %s: %s\n", msg, uv_err_name(uv_last_error()));   \
     return 2;                                                                 \
@@ -48,7 +49,12 @@ int main(int argc, char** argv)
         result = uv_tcp_keepalive(&server_socket,1,60);
         CHECK(result, "uv_tcp_keepalive");
         struct sockaddr_in address;
+#if UV_VERSION_MAJOR < 1
+        addresss = uv_ip4_addr(opts.IP.c_str(), static_cast<int>(opts.Port));
+        result = 0;
+#else
         result = uv_ip4_addr(opts.IP.c_str(), static_cast<int>(opts.Port), &address);
+#endif
         CHECK(result, "uv_ip4_addr");
 #if UV_VERSION_MAJOR < 1
         result = uv_tcp_bind(&server_socket, &address, 0);

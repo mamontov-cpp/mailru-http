@@ -63,7 +63,11 @@ void server::on_read(uv_stream_t* stream, int nread, uv_buf_t const*  buf)
     /* if read bytes counter -1 there is an error or EOF */
     if (nread < 0) {
         if (nread != UV_EOF) {
+#if UV_VERSION_MAJOR < 1
+            sys::Log::write("[WARNING] Error on reading from buffer on %p: %s\n", stream, uv_err_name(uv_last_error()));
+#else
             sys::Log::write("[WARNING] Error on reading from buffer on %p: %s\n", stream, uv_err_name(nread));
+#endif
         }
         
 
@@ -88,7 +92,11 @@ void server::on_read(uv_stream_t* stream, int nread, uv_buf_t const*  buf)
 
         int result = uv_write(&req, stream, &out_buf, 1, NULL);
         if (result) {
+#if UV_VERSION_MAJOR < 1
+            sys::Log::write("[WARNING] Error on writing to buffer on %p: %s\n", stream, uv_err_name(uv_last_error()));
+#else
             sys::Log::write("[WARNING] Error on writing to buffer on %p: %s\n", stream, uv_err_name(result));
+#endif
         }
 
 
