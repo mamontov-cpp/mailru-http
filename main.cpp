@@ -57,7 +57,7 @@ int main(int argc, char** argv)
 #endif
         CHECK(result, "uv_ip4_addr");
 #if UV_VERSION_MAJOR < 1
-        result = uv_tcp_bind(&server_socket, address, 0);
+        result = uv_tcp_bind(&server_socket, address);
 #else
         result = uv_tcp_bind(&server_socket, reinterpret_cast<const struct sockaddr*>(&address), 0);
 #endif
