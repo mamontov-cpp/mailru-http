@@ -50,14 +50,14 @@ int main(int argc, char** argv)
         CHECK(result, "uv_tcp_keepalive");
         struct sockaddr_in address;
 #if UV_VERSION_MAJOR < 1
-        addresss = uv_ip4_addr(opts.IP.c_str(), static_cast<int>(opts.Port));
+        address = uv_ip4_addr(opts.IP.c_str(), static_cast<int>(opts.Port));
         result = 0;
 #else
         result = uv_ip4_addr(opts.IP.c_str(), static_cast<int>(opts.Port), &address);
 #endif
         CHECK(result, "uv_ip4_addr");
 #if UV_VERSION_MAJOR < 1
-        result = uv_tcp_bind(&server_socket, &address, 0);
+        result = uv_tcp_bind(&server_socket, address, 0);
 #else
         result = uv_tcp_bind(&server_socket, reinterpret_cast<const struct sockaddr*>(&address), 0);
 #endif
