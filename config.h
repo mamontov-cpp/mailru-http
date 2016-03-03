@@ -6,3 +6,5 @@
 
 // Enable it on debug!
 #define NO_DAEMONIZE
+// Enable to logging for exam
+//#define LOGGING_FOR_EXAM

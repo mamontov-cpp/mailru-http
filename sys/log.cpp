@@ -22,7 +22,11 @@ bool sys::Log::open()
 #ifdef WIN32
     m_log.m_file = fopen("__________log.txt", "wt");
 #else
+#ifdef LOGGING_FOR_EXAM
     m_log.m_file = fopen("/home/box/__________log.txt", "wt");
+#else
+    m_log.m_file = fopen("__________log.txt", "wt");
+#endif
 #endif
     if (m_log.m_file)
     {
