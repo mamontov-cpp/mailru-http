@@ -47,12 +47,20 @@ public:
         \param[in] handle handle
         \param[in] status a status for callback
      */
+#if UV_VERSION_MAJOR < 1
+    static void onSocketReceived(uv_async_t* handle, int status);
+#else
     static void onSocketReceived(uv_async_t* handle);
+#endif
     /*! Callback, which is called, when worker receives kill signal
         \param[in] handle handle
         \param[in] status a status for callback
      */
+#if UV_VERSION_MAJOR < 1
+    static void onKillReceived(uv_async_t* handle, int status);
+#else
     static void onKillReceived(uv_async_t* handle);
+#endif
 protected:
     /*! Queue for sockets to be handled
      */

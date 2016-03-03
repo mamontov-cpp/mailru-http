@@ -75,13 +75,20 @@ void sys::Worker::enqueue(uv_tcp_t* socket)
     uv_async_send(&m_receive_signal);
 }
 
-
+#if UV_VERSION_MAJOR < 1
+void sys::Worker::onSocketReceived(uv_async_t* handle, int)
+#else
 void sys::Worker::onSocketReceived(uv_async_t* handle)
+#endif
 {
     reinterpret_cast<sys::Worker*>(handle->loop->data)->perform();
 }
 
+#if UV_VERSION_MAJOR < 1
+void sys::Worker::onKillReceived(uv_async_t* handle, int)
+#else
 void sys::Worker::onKillReceived(uv_async_t* handle)
+#endif
 {
     uv_stop(handle->loop);
 }
