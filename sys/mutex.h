@@ -3,12 +3,7 @@
     Simple mutex wrapper
 */
 #pragma once
-#ifdef WIN32
-    struct _RTL_CRITICAL_SECTION;
-    typedef _RTL_CRITICAL_SECTION CRITICAL_SECTION;
-#else
-    #include  <pthread.h>
-#endif
+#include <uv.h>
 
 namespace sys
 {
@@ -34,11 +29,7 @@ public:
      */
     void unlock();
 protected:
-#ifdef WIN32
-    CRITICAL_SECTION*  m_m;          //!< A system-dependent handle of mutex
-#else
-    pthread_mutex_t m_m;  //!< A system-dependent handle of mutex
-#endif
+    uv_mutex_t m_mtx;
 private:
     /*! Cannot be copied, so this is disabled and not implemented
         \param[in] o other mutex

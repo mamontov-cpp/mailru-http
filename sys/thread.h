@@ -4,35 +4,13 @@
     which uses pthread on Linux and WinAPI on Windows 
 */
 #pragma once
-
-#ifdef WIN32
-    #ifndef NOMINMAX
-    #define NOMINMAX 
-    #endif
-    #include  <windows.h>
-#else
-#ifndef _GNU_SOURCE
-    #define _GNU_SOURCE
-#endif
-    #include  <pthread.h>
-    #include  <sys/types.h>
-    #include  <sys/syscall.h>
-    #include  <linux/unistd.h>
-    #include <unistd.h>
-#endif
+#include "uv.h"
 
 namespace sys
 {
 
-typedef void*(*ThreadFunction)(void*);
-
-#ifdef WIN32
-    typedef HANDLE ThreadId;
-#endif
-
-#ifdef LINUX
-    typedef pid_t ThreadId;
-#endif
+typedef void(*ThreadFunction)(void*);
+typedef uv_thread_t ThreadId;
 
 /*! Returns current thread id
     \return thread id
@@ -63,7 +41,7 @@ public:
     bool run();
     /*! Blocks execution and waits until thread is stopped
      */
-    void wait() const;
+    void wait();
 protected:
     /*! Defines executed code
      */
@@ -71,15 +49,9 @@ protected:
     /*! Argument for function
      */
     void* m_arg;
-#ifdef WIN32
-    /*! A handle, working with thread
+    /*! A handle for thread
      */
-    HANDLE m_handle;
-#else
-    /*! A handle, working with thread
-     */
-    pthread_t m_handle;
-#endif
+    uv_thread_t m_handle;
 private:
     /*! DO NOT USE! Not implemented
         \param[in] o other object

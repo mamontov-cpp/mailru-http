@@ -225,7 +225,7 @@ uv_tcp_t* server::next_connection()
     return result;    
 }
 
-void* server::worker_function(void* arg)
+void server::worker_function(void* arg)
 {
     bool* running = static_cast<bool*>(arg);
     while((*running))
@@ -237,5 +237,4 @@ void* server::worker_function(void* arg)
             server::on_accept(client);
         }
     }
-    return NULL;
 }

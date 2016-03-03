@@ -5,4 +5,4 @@
 #pragma once
 
 // Enable it on debug!
-// #define NO_DAEMONIZE
+#define NO_DAEMONIZE

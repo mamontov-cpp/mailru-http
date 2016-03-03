@@ -1,45 +1,27 @@
 #include "mutex.h"
-
-#ifdef WIN32
-    #include  <windows.h> 
-#endif
+#include "log.h"
 
 sys::Mutex::Mutex()
 {
-#ifdef WIN32
-    m_m = new CRITICAL_SECTION();
-    InitializeCriticalSection(m_m);
-#else
-    pthread_mutex_init(&m_m,NULL);
-#endif
+    if (uv_mutex_init(&m_mtx) != 0)
+    {
+        sys::Log::write("[ERROR] Could not create mutex, possible resource exhaustion");
+    }
 }
 
 sys::Mutex::~Mutex()
 {
-#ifdef WIN32
-    DeleteCriticalSection(m_m);
-    delete m_m;
-#else
-    pthread_mutex_destroy(&m_m);
-#endif
+    uv_mutex_destroy(&m_mtx);
 }
 
 // ReSharper disable once CppMemberFunctionMayBeConst
 void sys::Mutex::lock()
 {
-#ifdef WIN32
-    EnterCriticalSection(m_m);
-#else
-    pthread_mutex_lock(&m_m);
-#endif
+    uv_mutex_lock(&m_mtx);
 }
 
 // ReSharper disable once CppMemberFunctionMayBeConst
 void sys::Mutex::unlock()
 {
-#ifdef WIN32
-    LeaveCriticalSection(m_m);
-#else
-    pthread_mutex_unlock(&m_m);
-#endif
+    uv_mutex_unlock(&m_mtx);
 }

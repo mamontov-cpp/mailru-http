@@ -11,7 +11,7 @@
 void cmd::parse(int argc, char** argv, cmd::Options& opts)
 {
     int c;
-    while ((c = getopt (argc, argv, "h:p:d:")) != -1)
+    while ((c = getopt (argc, argv, "h:p:d:t:")) != -1)
     switch (c)
     {
       case 'h':
@@ -21,6 +21,12 @@ void cmd::parse(int argc, char** argv, cmd::Options& opts)
         if (sscanf(optarg, "%d", &opts.Port) < 1)
         {
             opts.Port = 80;
+        }
+        break;
+      case 't':
+        if (sscanf(optarg, "%u", &opts.ThreadPoolSize) < 1)
+        {
+            opts.ThreadPoolSize = 80;
         }
         break;
       case 'd':

@@ -17,13 +17,18 @@ sys::ThreadPool::~ThreadPool()
     }
 }
 
-void sys::ThreadPool::run()
+int sys::ThreadPool::run()
 {
+    int result = 0;
     m_running = true;
     for(size_t i = 0; i < m_threads.size(); i++)
     {
-        m_threads[i]->run();
+        if (m_threads[i]->run())
+        {
+            ++result;
+        }
     }
+    return result;
 }
 
 void sys::ThreadPool::wait()

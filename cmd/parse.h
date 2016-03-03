@@ -20,10 +20,13 @@ struct Options
     /*! A directory, where files, are located
      */
     std::string Directory;
+    /*! Size of threadpool
+     */
+    size_t ThreadPoolSize;
 
     /*! A default options
      */
-    inline Options() : IP("127.0.0.1"), Port(80), Directory(".")
+    inline Options() : IP("127.0.0.1"), Port(80), Directory("."), ThreadPoolSize(10)
     {
         
     }

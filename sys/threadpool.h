@@ -21,8 +21,9 @@ public:
      */
     ~ThreadPool();
     /*! Runs all threads
+        \returns count of threads started
      */
-    void run();
+    int run();
     /*! Joins all threads, forcing them too stop
      */
     void wait();

@@ -71,6 +71,6 @@ uv_tcp_t* next_connection();
     \param[in] nothing
     \return NULL
  */
-void* worker_function(void* arg);
+void worker_function(void* arg);
 
 }
