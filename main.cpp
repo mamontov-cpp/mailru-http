@@ -34,14 +34,13 @@ if (status != 0) {                                                   \
 int main(int argc, char** argv)
 {
     cmd::parse(argc, argv, opts);
-    sys::ThreadPool pool(server::worker_function, opts.ThreadPoolSize);    
     printf("[INFO] Going to serve %s on %s:%d\n", opts.Directory.c_str(), opts.IP.c_str(), opts.Port);
     if (sys::Log::open() == false)
     {
         printf("[FATAL] Cannot open log file");
         return 1;
     }
-
+    sys::ThreadPool pool(opts.ThreadPoolSize); 
     if (cmd::daemonize())
     {
 #ifndef WIN32
@@ -49,7 +48,9 @@ int main(int argc, char** argv)
         sys::Log::open();        
         signal(SIGPIPE, SIG_IGN);
 #endif
+          
         uv_loop = uv_default_loop();
+        uv_loop->data = &pool;
         int result = uv_tcp_init(uv_loop, &server_socket);
         CHECK(result, "uv_tcp_init");
         result = uv_tcp_keepalive(&server_socket,1,60);

@@ -84,6 +84,9 @@
     <ClCompile Include="sys\threadpool.cpp">
       <Filter>Файлы исходного кода\sys</Filter>
     </ClCompile>
+    <ClCompile Include="sys\worker.cpp">
+      <Filter>Файлы исходного кода\sys</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="getopt\getopt.h">
@@ -126,6 +129,9 @@
       <Filter>Заголовочные файлы\slre</Filter>
     </ClInclude>
     <ClInclude Include="sys\threadpool.h">
+      <Filter>Заголовочные файлы\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="sys\worker.h">
       <Filter>Заголовочные файлы\sys</Filter>
     </ClInclude>
   </ItemGroup>

@@ -63,14 +63,5 @@ void check_if_can_respond(
     bool require
 );
 
-/*! Returns next connection or NULL if nothing
-    \return connection
- */
-uv_tcp_t* next_connection();
-/*! Worker function for thread
-    \param[in] nothing
-    \return NULL
- */
-void worker_function(void* arg);
 
 }
