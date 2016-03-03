@@ -88,11 +88,7 @@ void server::on_memory_request(uv_handle_t* handle, size_t sz, uv_buf_t* buf)
 
 void server::on_read(
     uv_stream_t* stream, 
-#if UV_VERSION_MAJOR < 1    
-    long int nread,
-#else
     ssize_t nread,
-#endif
 #if UV_VERSION_MAJOR < 1    
     uv_buf_t buf
 #else

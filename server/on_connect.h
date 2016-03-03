@@ -37,7 +37,7 @@ uv_buf_t on_memory_request(uv_handle_s* handle, size_t sz);
     \param[in] nread a readable state
     \param[in] buf buffer
  */
-void on_read(uv_stream_t * stream, long int nread, uv_buf_t buf);
+void on_read(uv_stream_t * stream, ssize_t nread, uv_buf_t buf);
 #else
 /*! A callback for requesting memory
     \param[in] handle a handle
