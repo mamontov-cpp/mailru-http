@@ -11,9 +11,13 @@
 # be preferred to shared ones.
 
 if(NOT LIBUV_USE_BUNDLED)
-  find_package(PkgConfig)
-  if (PKG_CONFIG_FOUND)
-    pkg_check_modules(PC_LIBUV QUIET libuv)
+  if (MINGW)
+  
+  else()
+	  find_package(PkgConfig)
+	  if (PKG_CONFIG_FOUND)
+		pkg_check_modules(PC_LIBUV QUIET libuv)
+	  endif()
   endif()
 else()
   set(PC_LIBUV_INCLUDEDIR)
@@ -25,7 +29,7 @@ endif()
 
 find_path(LIBUV_INCLUDE_DIR uv.h
   HINTS ${PC_LIBUV_INCLUDEDIR} ${PC_LIBUV_INCLUDE_DIRS}
-  ${LIMIT_SEARCH})
+  ${LIMIT_SEARCH} "../libuv" "../libuv/include")
 
 # If we're asked to use static linkage, add libuv.a as a preferred library name.
 if(LIBUV_USE_STATIC)
@@ -41,7 +45,7 @@ endif()
 
 find_library(LIBUV_LIBRARY NAMES ${LIBUV_NAMES}
   HINTS ${PC_LIBUV_LIBDIR} ${PC_LIBUV_LIBRARY_DIRS}
-  ${LIMIT_SEARCH})
+  ${LIMIT_SEARCH} "../libuv")
 
 mark_as_advanced(LIBUV_INCLUDE_DIR LIBUV_LIBRARY)
 
