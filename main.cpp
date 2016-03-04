@@ -1,12 +1,12 @@
 #include "cmd/parse.h"
 #include "cmd/daemonize.h"
+#include "server/server.h"
 #include "server/on_connect.h"
 #include "sys/log.h"
 #include "sys/threadpool.h"
 #include <uv.h>
 
 
-// Либа полагается на libuv и slre для разбора
 
 #ifndef WIN32
     #include <signal.h>
@@ -34,6 +34,7 @@ if (status != 0) {                                                   \
 int main(int argc, char** argv)
 {
     cmd::parse(argc, argv, opts);
+    server::Server::initParser();
     printf("[INFO] Going to serve %s on %s:%d\n", opts.Directory.c_str(), opts.IP.c_str(), opts.Port);
     if (sys::Log::open() == false)
     {

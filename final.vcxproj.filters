@@ -37,11 +37,11 @@
     <Filter Include="Файлы исходного кода\server">
       <UniqueIdentifier>{41241ae1-e72c-4dac-b05b-55a2720a683f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Заголовочные файлы\slre">
-      <UniqueIdentifier>{219eb817-1ada-4d1c-98c2-c44b3a55a6d3}</UniqueIdentifier>
+    <Filter Include="Заголовочные файлы\regex">
+      <UniqueIdentifier>{d061ffaf-095f-4870-98ee-00a578ea2824}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы исходного кода\slre">
-      <UniqueIdentifier>{75e9ef82-4333-4ed8-92ea-286f9a495dd1}</UniqueIdentifier>
+    <Filter Include="Файлы исходного кода\regex">
+      <UniqueIdentifier>{8da879aa-f577-4861-bcbd-ae9db7573741}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -78,14 +78,14 @@
     <ClCompile Include="server\server.cpp">
       <Filter>Файлы исходного кода\server</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SDKs\slre\slre.c">
-      <Filter>Файлы исходного кода\slre</Filter>
-    </ClCompile>
     <ClCompile Include="sys\threadpool.cpp">
       <Filter>Файлы исходного кода\sys</Filter>
     </ClCompile>
     <ClCompile Include="sys\worker.cpp">
       <Filter>Файлы исходного кода\sys</Filter>
+    </ClCompile>
+    <ClCompile Include="regex\dfa.cpp">
+      <Filter>Файлы исходного кода\regex</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -125,14 +125,17 @@
     <ClInclude Include="server\server.h">
       <Filter>Заголовочные файлы\server</Filter>
     </ClInclude>
-    <ClInclude Include="slre\slre.h">
-      <Filter>Заголовочные файлы\slre</Filter>
-    </ClInclude>
     <ClInclude Include="sys\threadpool.h">
       <Filter>Заголовочные файлы\sys</Filter>
     </ClInclude>
     <ClInclude Include="sys\worker.h">
       <Filter>Заголовочные файлы\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="regex\matchresult.h">
+      <Filter>Заголовочные файлы\regex</Filter>
+    </ClInclude>
+    <ClInclude Include="regex\dfa.h">
+      <Filter>Заголовочные файлы\regex</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

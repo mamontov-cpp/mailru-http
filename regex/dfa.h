@@ -14,8 +14,10 @@ struct Edge
 	bool Not;   //!< Whether we should NOT go to end state in case of match
 	bool Final; //!< Whether this node is final
 	char C;     //!< A character, which should be tested
+    bool Not2; //!< Should we use second char
+    char C2;   //!< A second character
 	
-	inline Edge() : State(0), Begin(false), End(false), Not(false), C(0)
+	inline Edge() : State(0), Begin(false), End(false), Not(false), Final(false), C(0), Not2(false), C2(0)
 	{
 		
 	}
@@ -26,7 +28,7 @@ struct Edge
 		\param[in] nt a flag for not matching
 		\param[in] c character
 	 */
-	inline Edge(int s, bool begin, bool end, bool nt, char c) :  State(s), Begin(begin), End(end), Not(nt), Final(false), C(c)
+	inline Edge(int s, bool begin, bool end, bool nt, char c) :  State(s), Begin(begin), End(end), Not(nt), Final(false), C(c), Not2(false), C2(0)
 	{
 		
 	}
@@ -59,6 +61,13 @@ struct Edge
 		Begin = true;
 		return *this;
 	}
+    /*! Forces edge to end capture group
+     */
+    inline Edge& endCaptureGroup()
+	{
+	    End = true;
+        return *this;
+	}
 };
 
 
@@ -71,7 +80,7 @@ struct DFA
 	/*! Tries to execute automata on string, returning result
 		\patam[in] s result
 	 */ 
-	regex::MatchResult match(const std::string& s);
+	regex::MatchResult match(const std::vector<char>& s);
 	/*! Adds new state
 		\return self-reference
 	 */
@@ -84,6 +93,26 @@ struct DFA
 		\return whether loops
 	 */
 	regex::Edge& loopOn();
+    /*! Compiles a substring for DFA
+        \param[in] s string
+        \return last string
+     */
+    regex::Edge& stringShouldContain(const std::string& s);
+    /*! Adds final string as ending width c
+        \param[in] c character
+     */
+    void stringMustEndWidth(char c);
+    /*! Repeats character zero or infinity
+        \param[in] c character
+        \return exiting edge
+     */
+    regex::Edge& zeroOrInfinityNot(char c);
+    /*! Repeats character zero or infinity
+        \param[in] c repeated and exiting character
+        \param[in] c2 a disabled character, which should not occur in string
+        \return exiting edge
+     */
+    regex::Edge& zeroOrInfinityNot(char c, char c2);
 };	
 	
 }

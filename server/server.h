@@ -13,6 +13,9 @@ namespace server
 class Server
 {
 public:
+    /*! Inits automatas, responsible for parsing requests
+     */
+    static void initParser();
     /*! Parses request
         \param[in] a state
         \return whether request was parsed

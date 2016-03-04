@@ -1,10 +1,30 @@
 #include "server.h"
 #include "../config.h"
 #include "../sys/log.h"
-#include "../slre/slre.h"
 #include "../cmd/parse.h"
+#include "../regex/dfa.h"
 
 extern cmd::Options opts;
+
+/* A dfa responsible for parsing HTTP 0.9 GET-header
+ */
+static regex::DFA HTTP_09_GET_string;
+/* A dfa responsible for parsing HTTP 1.0 GET-header
+ */
+static regex::DFA HTTP_10_GET_string;
+
+
+void server::Server::initParser()
+{
+    HTTP_09_GET_string.stringShouldContain("GET ").startCaptureGroup();
+    HTTP_09_GET_string.zeroOrInfinityNot('\r', ' ').endCaptureGroup();
+    HTTP_09_GET_string.stringMustEndWidth('\n');
+
+    HTTP_10_GET_string.stringShouldContain("GET ").startCaptureGroup();
+    HTTP_10_GET_string.zeroOrInfinityNot(' ').endCaptureGroup();
+    HTTP_10_GET_string.zeroOrInfinityNot('\r');
+    HTTP_10_GET_string.stringMustEndWidth('\n');
+}
 
 server::RequestParsingState* server::Server::parseRequest(server::ClientState* state)
 {
@@ -14,42 +34,28 @@ server::RequestParsingState* server::Server::parseRequest(server::ClientState* s
     if (state->Request.size() != 0)
     {
         // Those regexes allow too much, but we can ignore it
-        int matched_simple = slre_match("^G?E?T?\\s[^\\r]*\\r?\\n?", &(state->Request[0]), state->Request.size(), NULL, 0, 0);
-        int matched_one = slre_match("^G?E?T?\\s[^\\s]*\\s?[^\\r]*\\r?\\n?", &(state->Request[0]), state->Request.size(), NULL, 0, 0);
-        if (matched_one > 0 || matched_simple > 0)
+        regex::MatchResult match_HTTP_09_GET = HTTP_09_GET_string.match(state->Request);
+        regex::MatchResult match_HTTP_10_GET = HTTP_10_GET_string.match(state->Request);
+        if ((match_HTTP_09_GET.Type != regex::MRT_ERROR) || (match_HTTP_10_GET.Type != regex::MRT_ERROR) )
         {
             result->Valid = true;
 #ifdef NO_DAEMONIZE
-            sys::Log::write("Matched 0.9: %d, 1.0: %d", matched_simple, matched_one);
+            sys::Log::write(
+                "Matched HTTP 0.9 header: %s\nMatched HTTP 1.0 header: %s\n", 
+                match_HTTP_09_GET.Result[0].c_str(), 
+                match_HTTP_10_GET.Result[0].c_str() 
+            );
 #endif
-            slre_cap caps09;
-            slre_cap caps10;
-            matched_simple = slre_match("^GET\\s([^\\r]+)\\r\n", &(state->Request[0]), state->Request.size(), &caps09, 1, 0);
-            matched_one = slre_match("^GET\\s([^\\s]+)\\s[^\\r]*\\r\n", &(state->Request[0]), state->Request.size(), &caps10, 1, 0);
-            if (matched_one > 0)
+            if (match_HTTP_10_GET.Type ==  regex::MRT_FULL)
             {
                 result->Complete = true;
-                result->URI = std::string(caps10.ptr, caps10.ptr + caps10.len);
-
-                // Due to SLRE being very buggy, it places spaces into URI
-                size_t smark = result->URI.find(" ");
-                if (smark != std::string::npos)
-                {
-                    result->URI = result->URI.substr(0, smark);
-                }
+                result->URI = match_HTTP_10_GET.Result[1];
             }
 
-            if (matched_simple > 0)
+            if (match_HTTP_09_GET.Type ==  regex::MRT_FULL)
             {
                 result->Complete = true;
-                result->URI = std::string(caps09.ptr, caps09.ptr + caps09.len);
-
-                // Due to SLRE being very buggy, it places spaces into URI
-                size_t smark = result->URI.find(" ");
-                if (smark != std::string::npos)
-                {
-                    result->URI = result->URI.substr(0, smark);
-                }
+                result->URI = match_HTTP_09_GET.Result[1];
             }
             if (result->Complete)
             {
