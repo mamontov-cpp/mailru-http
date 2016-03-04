@@ -30,12 +30,41 @@ struct Edge
 	{
 		
 	}
+	/*! Makes edge trigger on character
+		\param[in] c character
+		\return self		
+	 */
+	inline Edge& match(char c)
+	{
+		Not = false;
+		C = c;
+		return *this;
+	}
+	
+	/*! Makes edge trigger on not character
+		\param[in] c character
+		\return self		
+	 */
+	inline Edge& notMatch(char c)
+	{
+		Not = true;
+		C = c;
+		return *this;
+	}
+	/*! Forces edge to start capture group
+		\return self
+	 */
+	inline Edge& startCaptureGroup()
+	{
+		Begin = true;
+		return *this;
+	}
 };
 
 
 struct DFA
 {
-	std::vector< std::vector<Edge> > Edges;
+	std::vector< std::vector<regex::Edge> > Edges;
 	/*! Creates new DFA
 	 */
 	DFA();
@@ -43,6 +72,18 @@ struct DFA
 		\patam[in] s result
 	 */ 
 	regex::MatchResult match(const std::string& s);
+	/*! Adds new state
+		\return self-reference
+	 */
+	regex::DFA& newState();
+	/*! Makes DFA shift to next state, adding new edge
+		\return new edge
+	 */
+	regex::Edge& nextStateOn();
+	/*! Makes DFA loop on this state, adding new edge
+		\return whether loops
+	 */
+	regex::Edge& loopOn();
 };	
 	
 }

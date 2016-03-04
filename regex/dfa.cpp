@@ -31,12 +31,7 @@ regex::MatchResult regex::DFA::match(const std::string& s)
 			}
 			if (matchededge != -1)
 			{
-				const Edge& edge = edges[matchededge];
-				if (edge.Begin)
-				{
-					currentgroupindex++;
-					result.Result.push_back(std::string());
-				}
+				const Edge& edge = edges[matchededge];				
 				if (edge.End)
 				{
 					currentgroupindex--;
@@ -48,6 +43,11 @@ regex::MatchResult regex::DFA::match(const std::string& s)
 				for(size_t i = 0; i <= currentgroupindex; i++)
 				{	
 					result.Result[i].push_back(input);
+				}
+				if (edge.Begin)
+				{
+					currentgroupindex++;
+					result.Result.push_back(std::string());
 				}
 				currentstate = edge.State;
 			}
@@ -80,4 +80,29 @@ regex::MatchResult regex::DFA::match(const std::string& s)
 		}
 	}
 	return result;
+}
+
+regex::DFA& regex::DFA::newState()
+{
+	Edges.push_back(std::vector<regex::Edge>());
+	return *this;
+}
+
+regex::Edge& regex::DFA::nextStateOn()
+{
+	std::vector<regex::Edge>& edges = Edges[Edges.size() - 1];
+	edges.push_back(regex::Edge());
+	regex::Edge& e = edges[edges.size() - 1];
+	e.State = Edges.size();
+	return e;
+}
+
+
+regex::Edge& regex::DFA::loopOn()
+{
+	std::vector<regex::Edge>& edges = Edges[Edges.size() - 1];
+	edges.push_back(regex::Edge());
+	regex::Edge& e = edges[edges.size() - 1];
+	e.State = Edges.size() - 1;
+	return e;
 }
